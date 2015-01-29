@@ -7,6 +7,7 @@ body {
   height: 15vh;
   background-color: #49A2DE;
   margin: 0;
+  position: fixed;
 }
 
 #navbar div {
@@ -37,32 +38,4 @@ body {
   border-left: solid white 2px;
   background-color: green;
   color: orange;
-}
-
-#stacks-board {
-  border: solid black 5px;
-  box-sizing: border-box;
-  height: 70vh;
-  width: 60%;
-  margin-left: 20%;
-  margin-top: 4%;
-  padding: 1%;
-}
-
-.stack-row {
-  list-style: none;
-  height: 20%;
-  margin: 0;
-  padding: 0;
-}
-
-.stack-slot {
-  box-sizing: border-box;
-  border-radius: 50%;
-  width: 18%;
-  height: 85%;
-  float: left;
-  background-color: blue;
-  margin: 1% 1% 1% 1%;
-
 }

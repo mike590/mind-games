@@ -1,7 +1,7 @@
 console.log("Loaded!")
 
 var scene, camera1, camera2, midPos, renderer, container, containerWidth, containerHeight;
-var geometry, geometry2, material, material2, mesh, light;
+var geometry, geometry2, material, material2, mesh, light, side1, side2;
 
 window.onload = function(){
   init();
@@ -42,6 +42,9 @@ function init() {
   light = new THREE.DirectionalLight(0xFFFFFF, 1);
   light.position.set(0, 350, 0);
   scene.add(light);
+
+  side1 = true;
+  side2 = true;
 
   midPos = {x: (cube1.position.x + cube2.position.x)/2, y: (cube1.position.y + cube2.position.y)/2, z: (cube1.position.z + cube2.position.z)/2};
 
@@ -85,6 +88,30 @@ function render() {
   camera1.aspect = (containerWidth / 2) /containerHeight;
   camera2.lookAt(midPos);
   renderer.render(scene, camera2);
+
+  if (side1){
+    cube1.translateX(3);
+  } else{
+    cube1.translateX(-3);
+  }
+
+  if (cube1.position.x > 400){
+    side1 = false;
+  } else if (cube1.position.x < -400) {
+    side1 = true;
+  }
+
+  if (side2){
+    cube2.translateY(3);
+  } else{
+    cube2.translateY(-3);
+  }
+
+  if (cube2.position.y > 500){
+    side2 = false;
+  } else if (cube2.position.y <-500) {
+    side2 = true;
+  }
 
   camera1.translateX(5);
   // camera1.translateY(2);

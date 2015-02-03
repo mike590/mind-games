@@ -1,7 +1,7 @@
 console.log("Loaded!")
 
-var scene, camera1, camera2, midPos, renderer, container, containerWidth, containerHeight;
-var geometry, geometry2, material, material2, mesh, light, side1, side2;
+var scene, camera, renderer, container, containerWidth, containerHeight;
+var geometry, material, gameBox, light;
 
 window.onload = function(){
   init();
@@ -17,45 +17,52 @@ function init() {
   containerHeight = parseInt(containerStyles.getPropertyValue("height"));
 
 
-  geometry = new THREE.BoxGeometry(200, 200, 200);
-  material = new THREE.MeshBasicMaterial({
-    color: 0xff0000,
-    wireframe: true
-  });
-
-  geometry2 = new THREE.BoxGeometry(300, 300, 300);
-  material2 = new THREE.MeshBasicMaterial({
-    color: 0xAFC916,
-    wireframe: true
-  });
-
-
-
-  cube1 = new THREE.Mesh(geometry, material);
-  cube1.position.set(0, 100, 0);
-  scene.add(cube1);
-
-  cube2 = new THREE.Mesh(geometry2, material2);
-  cube2.position.set(400, 100, 0);
-  scene.add(cube2);
-
-  light = new THREE.DirectionalLight(0xFFFFFF, 1);
-  light.position.set(0, 350, 0);
-  scene.add(light);
-
-  side1 = true;
-  side2 = true;
-
-  midPos = {x: (cube1.position.x + cube2.position.x)/2, y: (cube1.position.y + cube2.position.y)/2, z: (cube1.position.z + cube2.position.z)/2};
-
-  camera1 = new THREE.PerspectiveCamera(75, (containerWidth / 2) / (containerHeight / 2), 1, 10000);
-  camera1.position.z = 500;
-  camera1.up.set(0, 1, 0);
-
+  geometry = new THREE.Geometry();
+  geometry.colorsNeedUpdate = true;
+  // Making geometry of gamebox, which will be a column with a floor and no ceiling
+  // 8 Vertices of Rectangular Prism
+  geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+  geometry.vertices.push(new THREE.Vector3(300, 0, 0));
+  geometry.vertices.push(new THREE.Vector3(0, 0, 300));
+  geometry.vertices.push(new THREE.Vector3(300, 0, 300));
+  geometry.vertices.push(new THREE.Vector3(0, 1000, 0));
+  geometry.vertices.push(new THREE.Vector3(300, 1000, 0));
+  geometry.vertices.push(new THREE.Vector3(0, 1000, 300));
+  geometry.vertices.push(new THREE.Vector3(300, 1000, 300));
   
-  camera2 = new THREE.PerspectiveCamera(75, (containerWidth / 2) / (containerHeight / 2), 1, 10000);
-  camera2.position.x = 800;
-  camera2.up.set(0, 1, 0);
+  // Floor
+  geometry.faces.push(new THREE.Face3(0, 1, 2));
+  geometry.faces.push(new THREE.Face3(3, 2, 1));
+  // Four Sides
+  geometry.faces.push(new THREE.Face3(0, 1, 4));
+  geometry.faces.push(new THREE.Face3(1, 4, 5));
+  geometry.faces.push(new THREE.Face3(0, 2, 4));
+  geometry.faces.push(new THREE.Face3(2, 4, 6));
+  geometry.faces.push(new THREE.Face3(2, 3, 6));
+  geometry.faces.push(new THREE.Face3(3, 6, 7));
+  geometry.faces.push(new THREE.Face3(3, 7, 1));
+  geometry.faces.push(new THREE.Face3(1, 5, 7));
+  geometry.faces[4].color.setHex('#F7AF14');
+
+
+
+  material = new THREE.MeshBasicMaterial({
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.5
+  });
+
+
+
+  gameBox = new THREE.Mesh(geometry, material);
+  gameBox.position.set(0, 0, 0);
+  scene.add(gameBox);
+
+  camera = new THREE.PerspectiveCamera(75, (containerWidth / containerHeight), 1, 1000);
+  camera.position.set(600, 500, 800);
+  camera.lookAt(new THREE.Vector3(0, 500, 0));
+
+
 
 
   renderer = new THREE.WebGLRenderer();
@@ -71,51 +78,8 @@ function animate() {
 }
 
 function render() {
-  midPos = {x: (cube1.position.x + cube2.position.x)/2, y: (cube1.position.y + cube2.position.y)/2, z: (cube1.position.z + cube2.position.z)/2};
-
-  renderer.setViewport(0, 0, (containerWidth / 2), containerHeight);
-  renderer.setScissor(0, 0, (containerWidth / 2), containerHeight);
-  renderer.enableScissorTest(true);
-  renderer.setClearColor("#5BEBDA");
-  camera1.aspect = (containerWidth / 2) /containerHeight;
-  camera1.lookAt(midPos);
-  renderer.render(scene, camera1);
-
-  renderer.setViewport((0.5 * containerWidth), 0, (containerWidth / 2), containerHeight);
-  renderer.setScissor((0.5 * containerWidth), 0, (containerWidth / 2), containerHeight);
-  renderer.enableScissorTest(true);
-  renderer.setClearColor("#17FC86");
-  camera1.aspect = (containerWidth / 2) /containerHeight;
-  camera2.lookAt(midPos);
-  renderer.render(scene, camera2);
-
-  if (side1){
-    cube1.translateX(3);
-  } else{
-    cube1.translateX(-3);
-  }
-
-  if (cube1.position.x > 400){
-    side1 = false;
-  } else if (cube1.position.x < -400) {
-    side1 = true;
-  }
-
-  if (side2){
-    cube2.translateY(3);
-  } else{
-    cube2.translateY(-3);
-  }
-
-  if (cube2.position.y > 500){
-    side2 = false;
-  } else if (cube2.position.y <-500) {
-    side2 = true;
-  }
-
-  camera1.translateX(5);
-  // camera1.translateY(2);
-  camera2.translateX(5);
-  // camera2.translateY(2);
+  renderer.setClearColor("#6CB2F0");
+  renderer.render(scene, camera);
+  
 
 }

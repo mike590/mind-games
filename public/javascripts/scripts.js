@@ -1,7 +1,7 @@
 console.log("Loaded!")
 
 var scene, camera, renderer, container, containerWidth, containerHeight;
-var geometry, material, floor, light;
+var geometry, material, floor, moves, light;
 
 window.onload = function(){
   init();
@@ -16,6 +16,7 @@ function init() {
   containerWidth = parseInt(containerStyles.getPropertyValue("width"));
   containerHeight = parseInt(containerStyles.getPropertyValue("height"));
 
+  moves = []
 
   // Making geometry of floor
   geometry = new THREE.Geometry();
@@ -34,9 +35,7 @@ function init() {
 
 
   material = new THREE.MeshBasicMaterial({
-    side: THREE.DoubleSide,
-    transparent: true,
-    opacity: 0.5
+    side: THREE.DoubleSide
   });
 
 
@@ -46,7 +45,7 @@ function init() {
   scene.add(floor);
 
   camera = new THREE.PerspectiveCamera(75, (containerWidth / containerHeight), 1, 1000);
-  camera.position.set(0, 500, 0);
+  camera.position.set(444, 444, 444);
   camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 
@@ -65,7 +64,7 @@ function animate() {
 }
 
 function render() {
-  renderer.setClearColor("#6CB2F0");
+  // renderer.setClearColor("#6CB2F0");
   renderer.render(scene, camera);
   
 

@@ -1,4 +1,4 @@
-console.log("Loaded!")
+console.log("Loaded!");
 
 var scene, camera, renderer, container, containerWidth, containerHeight;
 var geometry, material, floor, moves, light;
@@ -16,7 +16,7 @@ function init() {
   containerWidth = parseInt(containerStyles.getPropertyValue("width"));
   containerHeight = parseInt(containerStyles.getPropertyValue("height"));
 
-  moves = []
+  moves = [];
 
   // Making geometry of floor
   geometry = new THREE.Geometry();
@@ -64,8 +64,25 @@ function animate() {
 }
 
 function render() {
-  // renderer.setClearColor("#6CB2F0");
+  renderer.setClearColor("#FA9A1B");
   renderer.render(scene, camera);
   
-
 }
+
+function newMove(){
+  var invisiBoxGeo = new THREE.BoxGeometry(100, 100, 100);
+  var invisiBoxMat = new THREE.MeshBasicMaterial({color: 0xC429B5});
+  var invisiBox = new THREE.Mesh(invisiBoxGeo, invisiBoxMat);
+  moves.push(invisiBox);
+  invisiBox.position.set(0, 100, 0);
+  scene.add(invisiBox);
+}
+
+
+
+
+
+
+
+
+

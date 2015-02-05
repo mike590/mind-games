@@ -71,11 +71,17 @@ function render() {
 
 function newMove(){
   var invisiBoxGeo = new THREE.BoxGeometry(100, 100, 100);
-  var invisiBoxMat = new THREE.MeshBasicMaterial({color: 0xC429B5});
+  var invisiBoxMat = new THREE.MeshBasicMaterial({transparent: true, opacity: 0});
   var invisiBox = new THREE.Mesh(invisiBoxGeo, invisiBoxMat);
-  moves.push(invisiBox);
+  var visiBoxGeo = new THREE.BoxGeometry(70, 70, 70);
+  var visiBoxMat = new THREE.MeshBasicMaterial({color: 0xC429B5});
+  var visiBox = new THREE.Mesh(visiBoxGeo, visiBoxMat);
   invisiBox.position.set(0, 100, 0);
+  invisiBox.add(visiBox);
+  moves.push(invisiBox);
+  moves.push(visiBox);
   scene.add(invisiBox);
+  // scene.add(visiBox);
 }
 
 
